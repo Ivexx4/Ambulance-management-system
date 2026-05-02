@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
+  logicalFilePath="changelog-ambulances">
+
+  <changeSet author="author" id="changelog-ambulances">
+
+    <createTable tableName="tc_ambulances">
+      <column autoIncrement="true" name="id" type="INT">
+        <constraints primaryKey="true" />
+      </column>
+      <column name="name" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+      <column name="uniqueid" type="VARCHAR(128)">
+        <constraints nullable="false" unique="true" />
+      </column>
+      <column name="deviceid" type="INT" />
+      <column name="driverid" type="INT" />
+      <column name="status" type="VARCHAR(128)" />
+      <column name="notes" type="VARCHAR(4000)" />
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="tc_ambulances" baseColumnNames="deviceid" constraintName="fk_ambulances_deviceid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="tc_devices" />
+    <addForeignKeyConstraint baseTableName="tc_ambulances" baseColumnNames="driverid" constraintName="fk_ambulances_driverid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="tc_drivers" />
+
+    <createTable tableName="tc_user_ambulance">
+      <column name="userId" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="ambulanceId" type="INT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="userId, ambulanceId" constraintName="pk_user_ambulance" tableName="tc_user_ambulance" />
+    <addForeignKeyConstraint baseTableName="tc_user_ambulance" baseColumnNames="userId" constraintName="fk_user_ambulance_userId" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_users" />
+    <addForeignKeyConstraint baseTableName="tc_user_ambulance" baseColumnNames="ambulanceId" constraintName="fk_user_ambulance_ambulanceId" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_ambulances" />
+
+  </changeSet>
+
+</databaseChangeLog>
