@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+  <changeSet author="junie" id="changelog-1.0-ambulances">
+
+    <createTable tableName="tc_ambulances">
+      <column name="id" type="INT" autoIncrement="true">
+        <constraints primaryKey="true" />
+      </column>
+      <column name="name" type="VARCHAR(128)">
+        <constraints nullable="false" />
+      </column>
+      <column name="uniqueid" type="VARCHAR(128)">
+        <constraints nullable="false" unique="true" />
+      </column>
+      <column name="deviceid" type="INT" />
+      <column name="driverid" type="INT" />
+      <column name="status" type="VARCHAR(64)" />
+      <column name="notes" type="VARCHAR(1024)" />
+      <column name="attributes" type="VARCHAR(4000)" />
+    </createTable>
+
+    <createTable tableName="tc_user_ambulance">
+      <column name="userid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="ambulanceid" type="INT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <createTable tableName="tc_group_ambulance">
+      <column name="groupid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="ambulanceid" type="INT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <createTable tableName="tc_device_ambulance">
+      <column name="deviceid" type="INT">
+        <constraints nullable="false" />
+      </column>
+      <column name="ambulanceid" type="INT">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+
+    <addForeignKeyConstraint baseTableName="tc_ambulances" baseColumnNames="deviceid" constraintName="fk_ambulance_deviceid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="tc_devices" />
+    <addForeignKeyConstraint baseTableName="tc_ambulances" baseColumnNames="driverid" constraintName="fk_ambulance_driverid" onDelete="SET NULL" referencedColumnNames="id" referencedTableName="tc_drivers" />
+
+    <addForeignKeyConstraint baseTableName="tc_user_ambulance" baseColumnNames="userid" constraintName="fk_user_ambulance_userid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_users" />
+    <addForeignKeyConstraint baseTableName="tc_user_ambulance" baseColumnNames="ambulanceid" constraintName="fk_user_ambulance_ambulanceid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_ambulances" />
+
+    <addForeignKeyConstraint baseTableName="tc_group_ambulance" baseColumnNames="groupid" constraintName="fk_group_ambulance_groupid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_groups" />
+    <addForeignKeyConstraint baseTableName="tc_group_ambulance" baseColumnNames="ambulanceid" constraintName="fk_group_ambulance_ambulanceid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_ambulances" />
+
+    <addForeignKeyConstraint baseTableName="tc_device_ambulance" baseColumnNames="deviceid" constraintName="fk_device_ambulance_deviceid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_devices" />
+    <addForeignKeyConstraint baseTableName="tc_device_ambulance" baseColumnNames="ambulanceid" constraintName="fk_device_ambulance_ambulanceid" onDelete="CASCADE" referencedColumnNames="id" referencedTableName="tc_ambulances" />
+
+  </changeSet>
+</databaseChangeLog>

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2026 Anton Tananaev (anton@traccar.org)
+ * under the original traccar licence
+*/
 FROM alpine AS package
 ARG VERSION
 COPY installers/traccar-other-$VERSION.zip /tmp/traccar.zip

@@ -1,9 +1,12 @@
 openapi: 3.1.0
 info:
-  title: Traccar
-  description: Traccar GPS tracking server API documentation. To use the API you need to have a server instance. For testing purposes you can use one of free [demo servers](https://www.traccar.org/demo-server/). For production use you can install your own server or get a [subscription service](https://www.traccar.org/product/tracking-server/).
+  title: Ambulance Management System (based on Traccar)
+  description: >-
+    Ambulance Management System API documentation. This project is a derivative work of the
+    Traccar GPS tracking server (Apache 2.0). Many endpoints and models are inherited from Traccar.
+    For details about Traccar, visit https://www.traccar.org/.
   contact:
-    name: Traccar Support
+    name: Project Maintainers
     url: https://www.traccar.org/
     email: support@traccar.org
   license:
@@ -65,6 +68,8 @@ tags:
     description: Computed attributes management
   - name: Drivers
     description: Drivers management
+  - name: Ambulances
+    description: Ambulance fleet management
   - name: Maintenance
     description: Maintenance management
   - name: Calendars
@@ -2232,9 +2237,12 @@ paths:
   /drivers:
     get:
       summary: Fetch a list of Drivers
-      description: Without params, it returns a list of Drivers the user has access to
+  /ambulances:
+    get:
+      summary: Fetch a list of Ambulances
+      description: Without params, it returns a list of Ambulances the user has access to
       tags:
-        - Drivers
+        - Ambulances
       parameters:
         - name: all
           in: query
@@ -2248,16 +2256,12 @@ paths:
             type: integer
         - name: deviceId
           in: query
-          description: >-
-            Standard users can use this only with _deviceId_s, they have access
-            to
+          description: Standard users can use this only with _deviceId_s, they have access to
           schema:
             type: integer
         - name: groupId
           in: query
-          description: >-
-            Standard users can use this only with _groupId_s, they have access
-            to
+          description: Standard users can use this only with _groupId_s, they have access to
           schema:
             type: integer
         - name: refresh
@@ -2287,16 +2291,16 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Driver'
+                  $ref: '#/components/schemas/Ambulance'
     post:
-      summary: Create a Driver
+      summary: Create an Ambulance
       tags:
-        - Drivers
+        - Ambulances
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Driver'
+              $ref: '#/components/schemas/Ambulance'
         required: true
       responses:
         '200':
@@ -2304,8 +2308,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Driver'
+                $ref: '#/components/schemas/Ambulance'
       x-codegen-request-body-name: body
+  /ambulances/{id}:
+    put:
+      summary: Update an Ambulance
+      tags:
+        - Ambulances
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ambulance'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ambulance'
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete an Ambulance
+      tags:
+        - Ambulances
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+          content: {}
   /drivers/{id}:
     put:
       summary: Update a Driver
@@ -3180,6 +3223,37 @@ components:
           type: object
           properties: {}
           description: Custom driver attributes
+    Ambulance:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique ambulance identifier
+        name:
+          type: string
+          description: Ambulance name or call sign
+        uniqueId:
+          type: string
+          description: Unique external identifier for the ambulance
+        deviceId:
+          type: integer
+          format: int64
+          description: Linked tracking device id
+        driverId:
+          type: integer
+          format: int64
+          description: Assigned driver id
+        status:
+          type: string
+          description: Operational status (available, busy, maintenance, etc.)
+        notes:
+          type: string
+          description: Free-form notes
+        attributes:
+          type: object
+          properties: {}
+          description: Custom ambulance attributes
     Maintenance:
       type: object
       properties:
