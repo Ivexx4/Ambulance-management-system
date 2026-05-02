@@ -1,0 +1,37 @@
+Ambulance Management System (based on Traccar)
+
+Copyright (c) 2026 The Ambulance Management System contributors
+
+This product includes software developed by third parties. Licenses and attributions follow.
+
+1) Traccar GPS Tracking Server
+   - Homepage: https://www.traccar.org/
+   - License: Apache License, Version 2.0
+   - Copyright: Traccar
+   - Notice: This project is a derivative work of the Traccar server. Portions of the code and design are
+     based on or adapted from Traccar and are used under the terms of the Apache License, Version 2.0.
+
+2) Traccar Web
+   - Repository: https://github.com/traccar/traccar-web
+   - License: Apache License, Version 2.0
+   - Copyright: Traccar
+
+3) Jakarta EE APIs (jakarta.*)
+   - Website: https://jakarta.ee/
+   - License: Various (including Eclipse Public License) — see upstream projects for details
+
+4) Liquibase
+   - Website: https://www.liquibase.org/
+   - License: Apache License, Version 2.0
+
+5) FasterXML Jackson
+   - Repository: https://github.com/FasterXML/jackson
+   - License: Apache License, Version 2.0
+
+Apache License 2.0 requires the preservation of copyright, patent, trademark, and attribution
+notices in redistributed source and, when applicable, in NOTICE files. Where a NOTICE file is
+provided by a dependency, users of this project should refer to the upstream repositories for
+full and current NOTICE contents.
+
+A copy of the Apache License, Version 2.0 is provided in LICENSE.txt (or TRACCAR LICENSE.txt) at the
+root of this repository and is also available at: http://www.apache.org/licenses/LICENSE-2.0
