@@ -37,20 +37,6 @@ for i in range(0, len(waypoints)):
 
 def send(conn, lat, lon, altitude, course, speed, battery, alarm, ignition, accuracy, rpm, fuel, driverUniqueId):
     params = (('id', id), ('timestamp', int(time.time())), ('lat', lat), ('lon', lon), ('altitude', altitude), ('bearing', course), ('speed', speed), ('batt', battery))
-    if alarm:
-        params = params + (('alarm', 'sos'),)
-    if ignition:
-        params = params + (('ignition', 'true'),)
-    else:
-        params = params + (('ignition', 'false'),)
-    if accuracy:
-        params = params + (('accuracy', accuracy),)
-    if rpm:
-        params = params + (('rpm', rpm),)
-    if fuel:
-        params = params + (('fuel', fuel),)
-    if driverUniqueId:
-        params = params + (('driverUniqueId', driverUniqueId),)
     conn.request('GET', '?' + urllib.parse.urlencode(params))
     conn.getresponse().read()
 
