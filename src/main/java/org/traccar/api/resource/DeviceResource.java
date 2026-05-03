@@ -80,6 +80,15 @@ public class DeviceResource extends BaseObjectResource<Device> {
         super(Device.class);
     }
 
+    @Override
+    @POST
+    public Response add(Device entity) throws Exception {
+        if (!"ambulance".equals(entity.getDeviceType())) {
+            throw new IllegalArgumentException("Only devices of type 'ambulance' can be created.");
+        }
+        return super.add(entity);
+    }
+
     @GET
     public Stream<Device> get(
             @QueryParam("all") boolean all, @QueryParam("userId") long userId,
