@@ -54,7 +54,7 @@ public final class SessionHelper {
         }
         String sessionOrigin = (String) session.getAttribute(ORIGIN_KEY);
         if (sessionOrigin == null) {
-            return true;
+            return false; // Changed from true to false
         }
         String requestOrigin = request.getHeader(HttpHeaderNames.ORIGIN.toString());
         return requestOrigin == null || sessionOrigin.equals(requestOrigin);

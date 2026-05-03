@@ -24,6 +24,7 @@ import jakarta.inject.Singleton;
 import org.traccar.config.Config;
 import org.traccar.database.BufferingManager;
 import org.traccar.database.NotificationManager;
+import org.traccar.handler.AmbulanceStatusHandler; // Import the new handler
 import org.traccar.handler.BasePositionHandler;
 import org.traccar.handler.ComputedAttributesHandler;
 import org.traccar.handler.CopyAttributesHandler;
@@ -103,6 +104,7 @@ public class ProcessingHandler extends ChannelInboundHandlerAdapter implements B
                 DistanceHandler.class,
                 FilterHandler.class,
                 GeofenceHandler.class,
+                AmbulanceStatusHandler.class, // Add the new handler here
                 GeocoderHandler.class,
                 MotionHandler.class,
                 ComputedAttributesHandler.Late.class,

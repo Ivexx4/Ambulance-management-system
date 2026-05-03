@@ -77,6 +77,7 @@ import org.traccar.geolocation.GoogleGeolocationProvider;
 import org.traccar.geolocation.OpenCellIdGeolocationProvider;
 import org.traccar.geolocation.UniversalGeolocationProvider;
 import org.traccar.geolocation.UnwiredGeolocationProvider;
+import org.traccar.handler.AmbulanceStatusHandler; // Import the new handler
 import org.traccar.handler.CopyAttributesHandler;
 import org.traccar.handler.FilterHandler;
 import org.traccar.handler.GeocoderHandler;
@@ -229,7 +230,7 @@ public class MainModule extends AbstractModule {
                 case "ban" -> new BanGeocoder(client, cacheSize, addressFormat);
                 case "here" -> new HereGeocoder(client, url, key, language, cacheSize, addressFormat);
                 case "mapmyindia" -> new MapmyIndiaGeocoder(client, url, key, cacheSize, addressFormat);
-                case "tomtom" -> new TomTomGeocoder(client, url, key, cacheSize, addressFormat);
+                case "tomtom" -> new TomTomGeocoder(client, url, key, cacheSize, addressFormat); // Removed 'language'
                 case "positionstack" -> new PositionStackGeocoder(client, key, cacheSize, addressFormat);
                 case "mapbox" -> new MapboxGeocoder(client, key, cacheSize, addressFormat);
                 case "maptiler" -> new MapTilerGeocoder(client, key, cacheSize, addressFormat);
@@ -298,6 +299,13 @@ public class MainModule extends AbstractModule {
             return new FilterHandler(cacheManager, statisticsManager);
         }
         return null;
+    }
+
+    @Singleton
+    @Provides
+    public static AmbulanceStatusHandler provideAmbulanceStatusHandler(
+            CacheManager cacheManager, Storage storage) {
+        return new AmbulanceStatusHandler(cacheManager, storage);
     }
 
     @Singleton

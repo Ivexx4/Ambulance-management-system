@@ -41,4 +41,14 @@ public class Driver extends ExtendedModel {
         this.uniqueId = uniqueId.trim();
     }
 
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

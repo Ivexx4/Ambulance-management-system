@@ -17,6 +17,7 @@ package org.traccar.storage.query;
 
 import org.traccar.model.GroupedModel;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface Condition {
@@ -84,6 +85,24 @@ public interface Condition {
 
         public Object getToValue() {
             return toValue;
+        }
+    }
+
+    class In implements Condition {
+        private final String column;
+        private final Collection<?> values;
+
+        public In(String column, Collection<?> values) {
+            this.column = column;
+            this.values = values;
+        }
+
+        public String getColumn() {
+            return column;
+        }
+
+        public Collection<?> getValues() {
+            return values;
         }
     }
 

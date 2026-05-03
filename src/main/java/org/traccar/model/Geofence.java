@@ -71,6 +71,20 @@ public class Geofence extends ExtendedModel implements Schedulable {
         geometry = null;
     }
 
+    // Geofence type
+    public static final String GEOFENCE_TYPE_BASE = "base";
+    public static final String GEOFENCE_TYPE_OTHER = "other";
+
+    private String type;
+
+    public String getType() {
+        return type != null ? type : GEOFENCE_TYPE_OTHER;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private GeofenceGeometry geometry;
 
     @QueryIgnore

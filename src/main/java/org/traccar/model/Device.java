@@ -19,7 +19,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.traccar.storage.QueryIgnore;
 import org.traccar.storage.StorageName;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @StorageName("tc_devices")
 public class Device extends GroupedModel implements Disableable, Schedulable {
@@ -59,6 +63,11 @@ public class Device extends GroupedModel implements Disableable, Schedulable {
     public static final String STATUS_UNKNOWN = "unknown";
     public static final String STATUS_ONLINE = "online";
     public static final String STATUS_OFFLINE = "offline";
+
+    // Ambulance-specific statuses
+    public static final String AMBULANCE_STATUS_OFFLINE = "offline";
+    public static final String AMBULANCE_STATUS_AVAILABLE = "available";
+    public static final String AMBULANCE_STATUS_ON_MISSION = "on_mission";
 
     private String status;
 
@@ -288,7 +297,7 @@ public class Device extends GroupedModel implements Disableable, Schedulable {
     }
 
     // Ambulance-specific fields
-    private Long driverId;
+    private Long driverId; // Kept for compatibility, but not used for multi-driver crew
 
     public Long getDriverId() {
         return driverId;
@@ -298,10 +307,28 @@ public class Device extends GroupedModel implements Disableable, Schedulable {
         this.driverId = driverId;
     }
 
+    public static final String KEY_DRIVER_UNIQUE_IDS = "driverUniqueIds";
+
+    public Set<String> getDriverUniqueIds() {
+        String driverUniqueIdsString = (String) getAttributes().get(KEY_DRIVER_UNIQUE_IDS); // Corrected
+        if (driverUniqueIdsString != null && !driverUniqueIdsString.isEmpty()) {
+            return new HashSet<>(Arrays.asList(driverUniqueIdsString.split(",")));
+        }
+        return new HashSet<>();
+    }
+
+    public void setDriverUniqueIds(Set<String> driverUniqueIds) {
+        if (driverUniqueIds != null && !driverUniqueIds.isEmpty()) {
+            getAttributes().put(KEY_DRIVER_UNIQUE_IDS, String.join(",", driverUniqueIds));
+        } else {
+            getAttributes().remove(KEY_DRIVER_UNIQUE_IDS);
+        }
+    }
+
     private String ambulanceStatus;
 
     public String getAmbulanceStatus() {
-        return ambulanceStatus;
+        return ambulanceStatus != null ? ambulanceStatus : AMBULANCE_STATUS_OFFLINE;
     }
 
     public void setAmbulanceStatus(String ambulanceStatus) {
