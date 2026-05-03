@@ -40,7 +40,6 @@ import org.traccar.handler.MotionHandler;
 import org.traccar.handler.OutdatedHandler;
 import org.traccar.handler.PositionForwardingHandler;
 import org.traccar.handler.PostProcessHandler;
-import org.traccar.handler.SpeedLimitHandler;
 import org.traccar.handler.TimeHandler;
 import org.traccar.handler.events.AlarmEventHandler;
 import org.traccar.handler.events.BaseEventHandler;
@@ -53,7 +52,7 @@ import org.traccar.handler.events.IgnitionEventHandler;
 import org.traccar.handler.events.MaintenanceEventHandler;
 import org.traccar.handler.events.MediaEventHandler;
 import org.traccar.handler.events.MotionEventHandler;
-import org.traccar.handler.events.OverspeedEventHandler;
+
 import org.traccar.handler.events.ProximityEventHandler;
 import org.traccar.handler.network.AcknowledgementHandler;
 import org.traccar.helper.PositionLogger;
@@ -105,7 +104,6 @@ public class ProcessingHandler extends ChannelInboundHandlerAdapter implements B
                 FilterHandler.class,
                 GeofenceHandler.class,
                 GeocoderHandler.class,
-                SpeedLimitHandler.class,
                 MotionHandler.class,
                 ComputedAttributesHandler.Late.class,
                 DriverHandler.class,
@@ -120,7 +118,6 @@ public class ProcessingHandler extends ChannelInboundHandlerAdapter implements B
         eventHandlers = Stream.of(
                 MediaEventHandler.class,
                 CommandResultEventHandler.class,
-                OverspeedEventHandler.class,
                 BehaviorEventHandler.class,
                 FuelEventHandler.class,
                 MotionEventHandler.class,

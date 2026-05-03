@@ -81,7 +81,6 @@ import org.traccar.handler.CopyAttributesHandler;
 import org.traccar.handler.FilterHandler;
 import org.traccar.handler.GeocoderHandler;
 import org.traccar.handler.GeolocationHandler;
-import org.traccar.handler.SpeedLimitHandler;
 import org.traccar.helper.LogAction;
 import org.traccar.helper.ObjectMapperContextResolver;
 import org.traccar.helper.WebHelper;
@@ -92,8 +91,6 @@ import org.traccar.session.cache.CacheManager;
 import org.traccar.sms.HttpSmsClient;
 import org.traccar.sms.SmsManager;
 import org.traccar.sms.SnsSmsClient;
-import org.traccar.speedlimit.OverpassSpeedLimitProvider;
-import org.traccar.speedlimit.SpeedLimitProvider;
 import org.traccar.storage.DatabaseStorage;
 import org.traccar.storage.MemoryStorage;
 import org.traccar.storage.Storage;
@@ -265,20 +262,6 @@ public class MainModule extends AbstractModule {
 
     @Singleton
     @Provides
-    public static SpeedLimitProvider provideSpeedLimitProvider(Config config, Client client) {
-        if (config.getBoolean(Keys.SPEED_LIMIT_ENABLE)) {
-            String type = config.getString(Keys.SPEED_LIMIT_TYPE, "overpass");
-            String url = config.getString(Keys.SPEED_LIMIT_URL);
-            return switch (type) {
-                case "overpass" -> new OverpassSpeedLimitProvider(config, client, url);
-                default -> throw new IllegalArgumentException("Unknown speed limit provider");
-            };
-        }
-        return null;
-    }
-
-    @Singleton
-    @Provides
     public static GeolocationHandler provideGeolocationHandler(
             Config config, @Nullable GeolocationProvider geolocationProvider, CacheManager cacheManager,
             StatisticsManager statisticsManager) {
@@ -294,15 +277,6 @@ public class MainModule extends AbstractModule {
             Config config, @Nullable Geocoder geocoder, CacheManager cacheManager) {
         if (geocoder != null) {
             return new GeocoderHandler(config, geocoder, cacheManager);
-        }
-        return null;
-    }
-
-    @Singleton
-    @Provides
-    public static SpeedLimitHandler provideSpeedLimitHandler(@Nullable SpeedLimitProvider speedLimitProvider) {
-        if (speedLimitProvider != null) {
-            return new SpeedLimitHandler(speedLimitProvider);
         }
         return null;
     }
