@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd"
+  logicalFilePath="changelog-merge-ambulance-device">
+
+  <changeSet author="author" id="merge-ambulance-device-1">
+    <!-- Add ambulance-specific columns to tc_devices -->
+    <addColumn tableName="tc_devices">
+      <column name="driverid" type="INT" />
+      <column name="ambulancestatus" type="VARCHAR(128)" />
+      <column name="ambulancenotes" type="VARCHAR(4000)" />
+      <column name="devicetype" type="VARCHAR(50)" defaultValue="vehicle" />
+    </addColumn>
+  </changeSet>
+
+  <changeSet author="author" id="merge-ambulance-device-2">
+    <!-- Migrate data from tc_ambulances to tc_devices -->
+    <sql splitStatements="false">
+      <![CDATA[
+        UPDATE tc_devices d
+        SET d.devicetype = 'ambulance',
+            d.driverid = (SELECT a.driverid FROM tc_ambulances a WHERE a.deviceid = d.id LIMIT 1),
+            d.ambulancestatus = (SELECT a.status FROM tc_ambulances a WHERE a.deviceid = d.id LIMIT 1),
+            d.ambulancenotes = (SELECT a.notes FROM tc_ambulances a WHERE a.deviceid = d.id LIMIT 1)
+        WHERE d.id IN (SELECT deviceid FROM tc_ambulances WHERE deviceid IS NOT NULL)
+      ]]>
+    </sql>
+  </changeSet>
+
+  <changeSet author="author" id="merge-ambulance-device-3">
+    <!-- Add foreign key constraint for driverid -->
+    <addForeignKeyConstraint
+      baseTableName="tc_devices"
+      baseColumnNames="driverid"
+      constraintName="fk_devices_driverid"
+      onDelete="SET NULL"
+      referencedColumnNames="id"
+      referencedTableName="tc_drivers" />
+  </changeSet>
+
+  <changeSet author="author" id="merge-ambulance-device-4">
+    <!-- Drop old ambulance tables -->
+    <dropForeignKeyConstraint baseTableName="tc_user_ambulance" constraintName="fk_user_ambulance_userId" />
+    <dropForeignKeyConstraint baseTableName="tc_user_ambulance" constraintName="fk_user_ambulance_ambulanceId" />
+    <dropForeignKeyConstraint baseTableName="tc_ambulances" constraintName="fk_ambulances_deviceid" />
+    <dropForeignKeyConstraint baseTableName="tc_ambulances" constraintName="fk_ambulances_driverid" />
+
+    <dropTable tableName="tc_user_ambulance" />
+    <dropTable tableName="tc_ambulances" />
+  </changeSet>
+
+</databaseChangeLog>
+

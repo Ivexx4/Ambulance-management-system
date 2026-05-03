@@ -287,4 +287,45 @@ public class Device extends GroupedModel implements Disableable, Schedulable {
         this.overspeedGeofenceId = overspeedGeofenceId;
     }
 
+    // Ambulance-specific fields
+    private Long driverId;
+
+    public Long getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(Long driverId) {
+        this.driverId = driverId;
+    }
+
+    private String ambulanceStatus;
+
+    public String getAmbulanceStatus() {
+        return ambulanceStatus;
+    }
+
+    public void setAmbulanceStatus(String ambulanceStatus) {
+        this.ambulanceStatus = ambulanceStatus;
+    }
+
+    private String ambulanceNotes;
+
+    public String getAmbulanceNotes() {
+        return ambulanceNotes;
+    }
+
+    public void setAmbulanceNotes(String ambulanceNotes) {
+        this.ambulanceNotes = ambulanceNotes;
+    }
+
+    private String deviceType; // Type: vehicle, ambulance, etc.
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
 }
